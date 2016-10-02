@@ -3,6 +3,7 @@
 
 #include <map>
 #include <vector>
+#include <string>
 
 #include "ItemDefine.h"
 
@@ -14,7 +15,7 @@ namespace AnimeFight
 		using MapItem = std::map<long long, Item *>;
 
 	public:
-		Item(ItemType In_Type, Item	*pOwner = nullptr);
+		Item(ItemType In_Type, Item *pOwner = nullptr, const std::wstring &In_ItemName = L"", const std::wstring &In_Description = L"");
 		virtual ~Item();
 
 		// 取得Item目前的Type
@@ -25,6 +26,12 @@ namespace AnimeFight
 
 		// 取得目前那個Item擁有自己
 		Item *const & GetOwner();
+
+		// 取得Item的名字
+		const std::wstring& GetItemName();
+
+		// 取得Item的描述
+		const std::wstring& GetItemDescription();
 
 		// 判斷這個Item是不是自己附屬的Item
 		bool IsMyAdjunct(const Item *In_pAdjunctItem);
@@ -87,6 +94,8 @@ namespace AnimeFight
 
 		// 那些Item附屬自己，方便自己這個Item要Delete時，一併移除所有附屬自己的東西。
 		MapItem m_mapAdjunctItem;
+
+		std::wstring m_wsItemName, m_wsItemDescription;
 	};
 }
 #endif // !_ANIMAFIGHT_ITEM_H

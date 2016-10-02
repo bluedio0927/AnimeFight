@@ -2,8 +2,8 @@
 
 namespace AnimeFight
 {
-	Item::Item(ItemType In_Type, Item *pOwner)
-		:m_eItemType(In_Type), m_pOwner(pOwner)
+	Item::Item(ItemType In_Type, Item *pOwner, const std::wstring &In_ItemName, const std::wstring &In_Description)
+		:m_eItemType(In_Type), m_pOwner(pOwner), m_wsItemName(In_ItemName), m_wsItemDescription(In_Description)
 	{
 		if (m_pOwner && !m_pOwner->AddAdjunct(this))
 			throw std::bad_alloc();
@@ -34,6 +34,16 @@ namespace AnimeFight
 	Item *const &  Item::GetOwner()
 	{
 		return m_pOwner;
+	}
+
+	const std::wstring& Item::GetItemName()
+	{
+		return m_wsItemName;
+	}
+
+	const std::wstring& Item::GetItemDescription()
+	{
+		return m_wsItemDescription;
 	}
 
 	bool Item::IsMyAdjunct(const Item *pAdjunct)

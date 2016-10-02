@@ -1,0 +1,16 @@
+*.tlog
+*.idb
+*.exe
+*.pdb
+*.obj
+*.pch
+*.ilk
+*.db
+*.opendb
+
+AnimaFight/stdafx.h
+AnimaFight/stdafx.cpp
+
+VC_Ouput/
+VC_Temp/
+ipch/
