@@ -19,6 +19,12 @@
     <Filter Include="原始程式檔\Item">
       <UniqueIdentifier>{551107c6-b568-4c36-ab7d-c76ee55f0a91}</UniqueIdentifier>
     </Filter>
+    <Filter Include="原始程式檔\Time">
+      <UniqueIdentifier>{c726c8e9-28ed-4e6e-8fe4-06b9dddf9e58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="標頭檔\Time">
+      <UniqueIdentifier>{22465f6e-e4e1-4df0-b7e2-221da55b84d8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -33,6 +39,15 @@
     <ClInclude Include="..\Core\Item\ItemDefine.h">
       <Filter>標頭檔\Item</Filter>
     </ClInclude>
+    <ClInclude Include="..\Core\Time\TimeLine.h">
+      <Filter>原始程式檔\Time</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Core\Time\TimeNode.h">
+      <Filter>原始程式檔\Time</Filter>
+    </ClInclude>
+    <ClInclude Include="TimeLineTest.h">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AnimaFight.cpp">
@@ -40,6 +55,12 @@
     </ClCompile>
     <ClCompile Include="..\Core\Item\Item.cpp">
       <Filter>原始程式檔\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Core\Time\TimeLine.cpp">
+      <Filter>標頭檔\Time</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Core\Time\TimeNode.cpp">
+      <Filter>標頭檔\Time</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

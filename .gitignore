@@ -14,3 +14,6 @@ AnimaFight/stdafx.cpp
 VC_Ouput/
 VC_Temp/
 ipch/
+*.TMP
+*.suo
+*.suo

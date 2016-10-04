@@ -94,7 +94,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
@@ -123,7 +123,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
@@ -157,10 +157,15 @@
   <ItemGroup>
     <ClInclude Include="..\Core\Item\Item.h" />
     <ClInclude Include="..\Core\Item\ItemDefine.h" />
+    <ClInclude Include="..\Core\Time\TimeLine.h" />
+    <ClInclude Include="..\Core\Time\TimeNode.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="TimeLineTest.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Core\Item\Item.cpp" />
+    <ClCompile Include="..\Core\Time\TimeLine.cpp" />
+    <ClCompile Include="..\Core\Time\TimeNode.cpp" />
     <ClCompile Include="AnimaFight.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
