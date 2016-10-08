@@ -7,15 +7,13 @@ namespace AnimeFight
 	TimeLine::TimeLine(size_t In_TimepointNums)
 		:m_bEnter(false), m_bLeave(false), m_stayTimePointIndex(0), m_thread(nullptr)
 	{
-		m_vecTimeNodes.reserve(In_TimepointNums);
-		m_vecTimeNodesLeaveFlag.reserve(In_TimepointNums);
-		for (size_t i = 0; i < In_TimepointNums; ++i)
+		m_vecTimeNodes.reserve(In_TimepointNums+1);
+		m_vecTimeNodesLeaveFlag.reserve(In_TimepointNums+1);
+		for (size_t i = 0; i < In_TimepointNums + 1; ++i)
 		{
 			m_vecTimeNodes.emplace_back(i);
-			m_vecTimeNodesLeaveFlag.push_back(false);
+			m_vecTimeNodesLeaveFlag.push_back(Unknown);
 		}
-		//Start Pop CMD Queue Thread...
-		m_thread = new std::thread(std::bind(&TimeLine::DoPopCMD, this));
 	}
 
 	TimeLine::~TimeLine()
@@ -72,34 +70,34 @@ namespace AnimeFight
 
 	void TimeLine::PushCMD(CMDTYPE In_CMD)
 	{
-		std::lock_guard<std::mutex> autolock(m_mutex);
-		m_queNODECMD.push(In_CMD);
+		{
+			std::lock_guard<std::mutex> autolock(m_mutex);
+			m_queNODECMD.push(In_CMD);
+		}
 		m_cvPop.notify_one();
 	}
 
 	void TimeLine::Enter()
 	{
-		std::unique_lock<std::mutex> unilck(m_mutex);
-		if (m_bEnter == false && !m_bLeave && m_vecTimeNodes.size())
-		{
-			m_bEnter = true;
-			GotoNode(unilck, 0);//First Node...
-		}
+		std::lock_guard<std::mutex> autolock(m_mutex);
+		m_bEnter = true;
+		//Start Pop CMD Queue Thread...
+		m_thread = new std::thread(std::bind(&TimeLine::DoPopCMD, this));
 	}
 
-	void TimeLine::Next()
+	TimeLine::NodeState TimeLine::Next()
 	{
+		NodeState state(Unknown);
 		std::unique_lock<std::mutex> unilck(m_mutex);
-		if (m_bEnter && !m_bLeave)
+		if (!m_bLeave && m_bEnter)
 		{
 			auto NextNodeIndex = m_stayTimePointIndex + 1;
 			if (NextNodeIndex == GetTimeNodeNums())// Final Node...
 				DoLeave();
 			else
-			{
-				GotoNode(unilck, NextNodeIndex);//Next Node...
-			}
+				state = GotoNode(unilck, NextNodeIndex);//Next Node...
 		}
+		return state;
 	}
 
 	bool TimeLine::ForwardTo(size_t In_PointIndex)
@@ -131,25 +129,25 @@ namespace AnimeFight
 	//private...
 	void TimeLine::DoPopCMD()
 	{
-		CMDTYPE CMD;
-		auto CalLeavems = [&](long long In_Stayms, long long In_Leavems)
+		auto NeedCalTimeout = [&](long long &Out_leavems)
 		{
-			return  (In_Stayms >= In_Leavems) && (m_vecTimeNodes[m_stayTimePointIndex].GetSate() != TimeNode::Hanging);
+			return GetTimeNodeStayTimeout(m_stayTimePointIndex, Out_leavems) && Out_leavems;
 		};
 
-		auto timeoutpredc = [&](long long In_Leavems)
+		auto timeoutpredc = [&](long long In_Leavems, long long &stayms)
 		{
 			//重新計算一次判斷停留時間是否已滿足條件
-			m_vecTimeNodesLeaveFlag[m_stayTimePointIndex] = CalLeavems(m_vecTimeNodes[m_stayTimePointIndex].GetStayDurationMs(), In_Leavems);
+			stayms = m_vecTimeNodes[m_stayTimePointIndex].GetStayDurationMs();
+			if (stayms >= In_Leavems && m_vecTimeNodes[m_stayTimePointIndex].GetSate() == TimeNode::Staying)
+				m_vecTimeNodesLeaveFlag[m_stayTimePointIndex] = NodeState::Passed_TimeOut;
 			return m_vecTimeNodesLeaveFlag[m_stayTimePointIndex] || m_bLeave;
 		};
 
 		auto defaultpredc = [&]
 		{
 			long long Leavems(0);
-			return (!m_queNODECMD.empty() ||
-					GetTimeNodeStayTimeout(m_stayTimePointIndex, Leavems) && Leavems/*在進行wait時, 如果因為m_stayTimePointIndex更改後被Notify, 檢查是否有timeout, 有就強制離開*/ ||
-					m_bLeave);
+			return (!m_queNODECMD.empty() || m_bLeave ||
+					NeedCalTimeout(Leavems)/*在進行wait時, 如果因為m_stayTimePointIndex更改後被Notify, 檢查是否有timeout, 有就強制離開*/);
 		};
 
 		// Start Run DoPopCMD....
@@ -158,12 +156,11 @@ namespace AnimeFight
 			std::unique_lock<std::mutex> unilck(m_mutex);
 			if (!m_queNODECMD.empty())
 			{
-				CMD = m_queNODECMD.front();
-				m_queNODECMD.pop();
-				switch (CMD)
+				switch (m_queNODECMD.front())
 				{
 				case CMDTYPE::GoNext:
-					m_vecTimeNodesLeaveFlag[m_stayTimePointIndex] = true;
+					if(m_vecTimeNodes[m_stayTimePointIndex].GetSate() == TimeNode::Staying)
+						m_vecTimeNodesLeaveFlag[m_stayTimePointIndex] = NodeState::Passed_Success;
 					break;
 
 				case CMDTYPE::Hang:
@@ -174,38 +171,35 @@ namespace AnimeFight
 					m_vecTimeNodes[m_stayTimePointIndex].Hang(false);
 					break;
 				}
-				m_cvNext.notify_one();//叫醒Block住的Client Function
+				m_queNODECMD.pop();
 			}
 			else
 			{
 				long long Leavems(0);
 				//Check時間節點的條件
-				if (GetTimeNodeStayTimeout(m_stayTimePointIndex, Leavems) && Leavems)
+				if (NeedCalTimeout(Leavems))
 				{
-					const auto& stayms = m_vecTimeNodes[m_stayTimePointIndex].GetStayDurationMs();
-
-					if (CalLeavems(stayms, Leavems) && !m_vecTimeNodesLeaveFlag[m_stayTimePointIndex])//計算判斷停留時間是否已滿足條件
-						m_vecTimeNodesLeaveFlag[m_stayTimePointIndex] = true;
-					else
+					long long stayms(0);
+					if (!timeoutpredc(Leavems, stayms))//計算判斷停留時間是否已滿足條件
 					{
-						if (Leavems > stayms)//停留時間還不夠
-							m_cvPop.wait_for(unilck, std::chrono::milliseconds(Leavems - stayms), std::bind(timeoutpredc, Leavems));//計算時間差值直接wait
-						else
-							m_cvPop.wait(unilck, defaultpredc);//時間條件已符合才會跑到這, 代表已離開這個節點或是剛好被Hang住
+						//計算時間差值直接wait
+						m_cvPop.wait_for(unilck, std::chrono::milliseconds(Leavems - stayms), defaultpredc);
 					}
-
-					m_cvNext.notify_one();//叫醒Block住的Client Function
 				}
 				else
 					m_cvPop.wait(unilck, defaultpredc);//若是無Timeout的Node跟一開始沒事做時卡在這
 			}//end if (!m_queNODECMD.empty())
+
+			if(m_vecTimeNodesLeaveFlag[m_stayTimePointIndex])//Passed的狀態才叫醒
+				m_cvNext.notify_one();//叫醒Block住的Client Function
 		}
 	}
 
-	void TimeLine::GotoNode(std::unique_lock<std::mutex> &unilck, size_t Index)
+	TimeLine::NodeState TimeLine::GotoNode(std::unique_lock<std::mutex> &unilck, size_t Index)
 	{
+		NodeState State(Unknown);
 		if ((m_vecTimeNodes[Index].GetSate() == TimeNode::None) &&
-			(Index == 0 || (m_vecTimeNodes[Index - 1].GetSate() == TimeNode::Passed)))//確認已離開前一個節點
+			(Index - 1 == 0 /*前一個節點是起點就跳過*/|| (m_vecTimeNodes[Index - 1].GetSate() == TimeNode::Passed)))//確認已離開前一個節點
 		{
 			//Enter...
 			m_vecTimeNodes[Index].Enter();
@@ -216,12 +210,16 @@ namespace AnimeFight
 			const auto &iter = m_mapTimeNodeLeaveMode.find(Index);
 			if (GetTimeNodeStayTimeout(Index, Out_ms))
 			{
-				//加入Hanging的判斷式是怕有先下了Hang CMD後沒下Kepp就直接下了GoNext
-				m_cvNext.wait(unilck, [&] { return ((m_vecTimeNodesLeaveFlag[Index] && m_vecTimeNodes[m_stayTimePointIndex].GetSate() == TimeNode::Staying) || m_bLeave); });
+				m_cvNext.wait(unilck, [&] { return (m_vecTimeNodesLeaveFlag[Index]  || m_bLeave); });
 			}
+			else
+				m_vecTimeNodesLeaveFlag[m_stayTimePointIndex] = NodeState::Passed_Success;
+
+			State = m_vecTimeNodesLeaveFlag[m_stayTimePointIndex];
 			//Leave...
 			m_vecTimeNodes[Index].Leave();
 		}
+		return State;
 	}
 
 	void TimeLine::DoLeave()

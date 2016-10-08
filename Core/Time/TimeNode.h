@@ -17,7 +17,7 @@ namespace AnimeFight
 		};
 
 	public:
-		TimeNode(long long In_lNumber);
+		explicit TimeNode(long long In_lNumber);
 		~TimeNode();
 
 		// ¨ú±o½s¸¹

@@ -1,29 +1,38 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="原始程式檔">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="標頭檔">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
     <Filter Include="資源檔">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="標頭檔\Item">
-      <UniqueIdentifier>{7ed59446-ad73-4fae-a498-7c8f50fe49df}</UniqueIdentifier>
+    <Filter Include="SourceFile">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="原始程式檔\Item">
+    <Filter Include="SourceFile\Item">
       <UniqueIdentifier>{551107c6-b568-4c36-ab7d-c76ee55f0a91}</UniqueIdentifier>
     </Filter>
-    <Filter Include="原始程式檔\Time">
+    <Filter Include="SourceFile\Time">
       <UniqueIdentifier>{c726c8e9-28ed-4e6e-8fe4-06b9dddf9e58}</UniqueIdentifier>
     </Filter>
-    <Filter Include="標頭檔\Time">
+    <Filter Include="HeaderFile">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="HeaderFile\Item">
+      <UniqueIdentifier>{7ed59446-ad73-4fae-a498-7c8f50fe49df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HeaderFile\Time">
       <UniqueIdentifier>{22465f6e-e4e1-4df0-b7e2-221da55b84d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HeaderFile\Action">
+      <UniqueIdentifier>{a3f9a663-f284-40f0-bb68-18469b30f056}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HeaderFile\TestPattern">
+      <UniqueIdentifier>{67f59c5e-2150-4292-8d5a-33cc659de199}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceFile\Action">
+      <UniqueIdentifier>{5e796926-5965-4119-8d08-a58efb885c0a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -31,36 +40,42 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
-      <Filter>標頭檔</Filter>
+      <Filter>HeaderFile</Filter>
     </ClInclude>
     <ClInclude Include="..\Core\Item\Item.h">
-      <Filter>標頭檔\Item</Filter>
+      <Filter>HeaderFile\Item</Filter>
     </ClInclude>
     <ClInclude Include="..\Core\Item\ItemDefine.h">
-      <Filter>標頭檔\Item</Filter>
+      <Filter>HeaderFile\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Core\Action\Action.h">
+      <Filter>HeaderFile\Action</Filter>
     </ClInclude>
     <ClInclude Include="..\Core\Time\TimeLine.h">
-      <Filter>原始程式檔\Time</Filter>
+      <Filter>HeaderFile\Time</Filter>
     </ClInclude>
     <ClInclude Include="..\Core\Time\TimeNode.h">
-      <Filter>原始程式檔\Time</Filter>
+      <Filter>HeaderFile\Time</Filter>
     </ClInclude>
-    <ClInclude Include="TimeLineTest.h">
-      <Filter>標頭檔</Filter>
+    <ClInclude Include="TestPattern\TimeLineTest.h">
+      <Filter>HeaderFile\TestPattern</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AnimaFight.cpp">
-      <Filter>原始程式檔</Filter>
+      <Filter>SourceFile</Filter>
     </ClCompile>
     <ClCompile Include="..\Core\Item\Item.cpp">
-      <Filter>原始程式檔\Item</Filter>
+      <Filter>SourceFile\Item</Filter>
     </ClCompile>
     <ClCompile Include="..\Core\Time\TimeLine.cpp">
-      <Filter>標頭檔\Time</Filter>
+      <Filter>SourceFile\Time</Filter>
     </ClCompile>
     <ClCompile Include="..\Core\Time\TimeNode.cpp">
-      <Filter>標頭檔\Time</Filter>
+      <Filter>SourceFile\Time</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Core\Action\Action.cpp">
+      <Filter>SourceFile\Action</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

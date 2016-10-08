@@ -9,16 +9,19 @@ namespace TimeLineTest
 {
 	static void RunTimeLine(AnimeFight::TimeLine &Line)
 	{
-		auto tpNowTimet = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
-		std::cout << "Enter TimeLine" << std::endl << std::ctime(&tpNowTimet);
+		using namespace std::chrono;
+		auto tpNowTimet = system_clock::to_time_t(system_clock::now());
+		//std::cout << "Enter TimeLine" << std::endl << std::ctime(&tpNowTimet);
 		Line.Enter();
 
 		int i(0);
 		while (!Line.IsEnd())
 		{
-			tpNowTimet = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+			tpNowTimet = system_clock::to_time_t(system_clock::now());
 			std::cout << "GoNext TimeLine Node=" << ++i << std::endl << std::ctime(&tpNowTimet);
-			Line.Next();
+			std::cout << "Wait Next Node....  ";
+			int iRet = Line.Next();
+			std::cout <<  "Result="<< iRet << std::endl;
 		}
 
 		std::cout << "Leave TimeLine" << std::endl;
@@ -27,8 +30,8 @@ namespace TimeLineTest
 	void TimeLineTest()
 	{
 		AnimeFight::TimeLine Line(3);
-		for (size_t i = 0; i < Line.GetTimeNodeNums(); ++i)
-			Line.SetTimeNodeStayTimeout(i, i*1000);
+		for (size_t i = 1; i < Line.GetTimeNodeNums(); ++i)
+			Line.SetTimeNodeStayTimeout(i, (i-1)*5000);
 
 		std::cout << "Start RunTimeLineThread" << std::endl;
 		auto RunTimeLineThread = new std::thread(std::bind(&RunTimeLine, std::ref(Line)));
@@ -52,7 +55,7 @@ namespace TimeLineTest
 			default:
 				break;
 			}
-		} while (input != 5566);
+		} while (input != 5566 && !Line.IsEnd());
 		Line.Cancel();
 		RunTimeLineThread->join();
 		std::cout << "Leave RunTimeLineThread" << std::endl;

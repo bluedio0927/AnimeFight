@@ -23,6 +23,7 @@
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>AnimaFight</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <ProjectName>AnimeFight</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -155,14 +156,16 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Core\Action\Action.h" />
     <ClInclude Include="..\Core\Item\Item.h" />
     <ClInclude Include="..\Core\Item\ItemDefine.h" />
     <ClInclude Include="..\Core\Time\TimeLine.h" />
     <ClInclude Include="..\Core\Time\TimeNode.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="TimeLineTest.h" />
+    <ClInclude Include="TestPattern\TimeLineTest.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Core\Action\Action.cpp" />
     <ClCompile Include="..\Core\Item\Item.cpp" />
     <ClCompile Include="..\Core\Time\TimeLine.cpp" />
     <ClCompile Include="..\Core\Time\TimeNode.cpp" />
