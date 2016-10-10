@@ -27,6 +27,9 @@ namespace AnimeFight
 		// 取得目前那個Item擁有自己
 		Item *const & GetOwner();
 
+		// 取得最上層那個Item擁有自己
+		Item *const GetSupenOwner();
+
 		// 取得Item的名字
 		const std::wstring& GetItemName();
 
@@ -53,7 +56,12 @@ namespace AnimeFight
 
 		// 自己附屬到別的Item的Operator
 		bool operator >>(Item& targetitem);
+		
+		// 別的Item附屬自己 的Operator
+		bool operator <<(Item* sourceitem);
 
+		// 自己附屬到別的Item的Operator
+		bool operator >> (Item* targetitem);
 		/*	物件本身的效果可以覆寫在這個函式裡面。
 			參數就是你這個Functor所能影響的所有Item。
 			定義上就是執行這個Functor就是執行這個Item本身的"效果"。
@@ -84,6 +92,14 @@ namespace AnimeFight
 
 		// ChangeOwner如果成功, 內部會自動呼叫此Function(給繼承的Item覆寫)
 		virtual void SelfDoChangeOwner(Item *In_pBeforeItem, Item *In_pAfterItem)
+		{}
+
+		//當有Item附屬進來時, 會呼叫此函式, 主要是讓繼承的物件能增加自己的條件
+		virtual void AdjunctJoin(Item *)
+		{}
+
+		//當有Item附屬離開時, 會呼叫此函式, 主要是讓繼承的物件能增加自己的條件
+		virtual void AdjunctLeave(Item *)
 		{}
 
 	private:

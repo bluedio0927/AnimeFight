@@ -34,6 +34,15 @@
     <Filter Include="SourceFile\Action">
       <UniqueIdentifier>{5e796926-5965-4119-8d08-a58efb885c0a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="HeaderFile\Character">
+      <UniqueIdentifier>{122abf60-7895-47a4-a59e-2d1914062b48}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HeaderFile\Card">
+      <UniqueIdentifier>{8273a731-0a24-4ff6-b008-79d8e5f63047}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceFile\Card">
+      <UniqueIdentifier>{3d7acc86-8a7d-4fe9-b919-e6a5c5a38eed}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -59,6 +68,36 @@
     </ClInclude>
     <ClInclude Include="TestPattern\TimeLineTest.h">
       <Filter>HeaderFile\TestPattern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Core\Character\Character.h">
+      <Filter>HeaderFile\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Core\Card\Card.h">
+      <Filter>HeaderFile\Card</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Core\Card\CardStack.h">
+      <Filter>HeaderFile\Card</Filter>
+    </ClInclude>
+    <ClInclude Include="TestPattern\CardTest.h">
+      <Filter>HeaderFile\TestPattern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Core\Card\CardZone.h">
+      <Filter>HeaderFile\Card</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Core\Card\SpecialCard.h">
+      <Filter>HeaderFile\Card</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Core\Card\CardDefine.h">
+      <Filter>HeaderFile\Card</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Core\Character\CharacterDefine.h">
+      <Filter>HeaderFile\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Core\Card\SummonStack.h">
+      <Filter>HeaderFile\Card</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Core\Card\TreasureCard.h">
+      <Filter>HeaderFile\Card</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

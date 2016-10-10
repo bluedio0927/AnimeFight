@@ -72,8 +72,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(SolutionDir)\VC_Output\$(Configuration)</OutDir>
-    <IntDir>$(SolutionDir)\VC_Temp\$(Configuration)</IntDir>
+    <OutDir>$(SolutionDir)VC_Output\$(Configuration)</OutDir>
+    <IntDir>$(SolutionDir)VC_Temp\$(Configuration)</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -82,8 +82,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(SolutionDir)\VC_Output\$(Configuration)</OutDir>
-    <IntDir>$(SolutionDir)\VC_Temp\$(Configuration)</IntDir>
+    <OutDir>$(SolutionDir)VC_Output\$(Configuration)</OutDir>
+    <IntDir>$(SolutionDir)VC_Temp\$(Configuration)</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -157,11 +157,21 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Core\Action\Action.h" />
+    <ClInclude Include="..\Core\Card\CardDefine.h" />
+    <ClInclude Include="..\Core\Card\SpecialCard.h" />
+    <ClInclude Include="..\Core\Card\Card.h" />
+    <ClInclude Include="..\Core\Card\CardStack.h" />
+    <ClInclude Include="..\Core\Card\CardZone.h" />
+    <ClInclude Include="..\Core\Card\SummonStack.h" />
+    <ClInclude Include="..\Core\Card\TreasureCard.h" />
+    <ClInclude Include="..\Core\Character\Character.h" />
+    <ClInclude Include="..\Core\Character\CharacterDefine.h" />
     <ClInclude Include="..\Core\Item\Item.h" />
     <ClInclude Include="..\Core\Item\ItemDefine.h" />
     <ClInclude Include="..\Core\Time\TimeLine.h" />
     <ClInclude Include="..\Core\Time\TimeNode.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="TestPattern\CardTest.h" />
     <ClInclude Include="TestPattern\TimeLineTest.h" />
   </ItemGroup>
   <ItemGroup>

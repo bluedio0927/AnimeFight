@@ -6,7 +6,8 @@ namespace AnimeFight
 	enum ItemType
 	{
 		Unknown = 0,
-		System, Player, Card
+		System, Player, Character,
+		Card, CardStack, CardZone
 	};
 }
 

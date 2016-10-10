@@ -25,6 +25,10 @@ namespace AnimeFight
 
 		bool removeTarget(Item *In_Target);
 
+		bool SetStageTimeout(size_t In_NodeIndex, long long In_Timeoutms);
+
+		bool UnSetStageTimeout(size_t In_NodeIndex);
+
 		bool addResponser(size_t Index, ActionResponser& In_Responser);
 
 		bool removeResponser(size_t Index, ActionResponser& In_Responser);
@@ -34,6 +38,8 @@ namespace AnimeFight
 		void SendStageCMD(TimeLine::CMDTYPE CMD);
 
 		TimeLine::NodeState DoNextStage();
+
+		size_t GetNowStage();
 
 		void Cancel();
 

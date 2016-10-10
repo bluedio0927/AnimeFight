@@ -4,10 +4,12 @@
 #include "../Core/Item/Item.h"
 
 #include "TestPattern/TimeLineTest.h"
+#include "TestPattern/CardTest.h"
 
 int main()
 {
-	TimeLineTest::TimeLineTest();
+	//TimeLineTest::TimeLineTest();
+	CardTest::CardTest();
 	return 0;
 }
 

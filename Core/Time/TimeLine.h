@@ -25,7 +25,8 @@ namespace AnimeFight
 		{
 			Unknown = 0,
 			Passed_Success,
-			Passed_TimeOut
+			Passed_TimeOut,
+			End
 		};
 
 		// 傳入時間軸有幾個時間節點(內部會自動+1, 因為要標示為起點)
@@ -44,7 +45,7 @@ namespace AnimeFight
 		bool SetTimeNodeStayTimeout(size_t In_NodeIndex, long long In_Timeoutms);
 
 		//  移除時間點的停留時間上限, Index從0開始
-		void UnSetTimeNodeStayTimeout(size_t In_NodeIndex);
+		bool UnSetTimeNodeStayTimeout(size_t In_NodeIndex);
 
 		//  丟入CMD, TimeLine自己本身有Thread會PopCMD(主要是給另一個Thread呼叫, 解決會Block住的函式)
 		void PushCMD(CMDTYPE In_CMD);

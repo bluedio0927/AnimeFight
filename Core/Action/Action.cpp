@@ -6,12 +6,21 @@ namespace AnimeFight
 		:m_ActionID(In_ID), m_TimeLine(ActionStage), m_Initiator(Initiator)
 		, m_vecActionEvent(ActionStage + 1), m_nowStage(0)
 	{
-
 	}
 
 	const int& Action::GetActionID()
 	{
 		return m_ActionID;
+	}
+
+	bool Action::SetStageTimeout(size_t In_NodeIndex, long long In_Timeoutms)
+	{
+		return m_TimeLine.SetTimeNodeStayTimeout(In_NodeIndex, In_Timeoutms);
+	}
+
+	bool Action::UnSetStageTimeout(size_t In_NodeIndex)
+	{
+		return m_TimeLine.UnSetTimeNodeStayTimeout(In_NodeIndex);
 	}
 
 	bool Action::addTarget(Item *In_Target)
@@ -69,9 +78,14 @@ namespace AnimeFight
 		return m_TimeLine.IsEnd();
 	}
 
+	size_t Action::GetNowStage()
+	{
+		return m_nowStage;
+	}
+
 	TimeLine::NodeState Action::DoNextStage()
 	{
-		++m_nowStage;
+		m_nowStage = m_TimeLine.GetNowStayPointIndex()+1;
 		//觸發所有註冊的響應
 		for(auto &iter : m_mapTargets)
 			m_vecActionEvent[m_nowStage].Invoke(m_ActionID, m_Initiator, iter.second);

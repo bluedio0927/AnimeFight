@@ -36,6 +36,14 @@ namespace AnimeFight
 		return m_pOwner;
 	}
 
+	Item *const Item::GetSupenOwner()
+	{
+		if (m_pOwner)
+			return m_pOwner->GetSupenOwner();
+		else
+			return this;
+	}
+
 	const std::wstring& Item::GetItemName()
 	{
 		return m_wsItemName;
@@ -82,6 +90,7 @@ namespace AnimeFight
 		if (CanAppend(pAdjunct))
 		{
 			m_mapAdjunctItem.emplace((long long)pAdjunct, pAdjunct);
+			AdjunctJoin(pAdjunct);
 			return true;
 		}
 		else
@@ -93,6 +102,7 @@ namespace AnimeFight
 		if (IsMyAdjunct(pAdjunct))
 		{
 			m_mapAdjunctItem.erase((long long)pAdjunct);
+			AdjunctLeave(pAdjunct);
 			return true;
 		}
 		else
@@ -115,11 +125,21 @@ namespace AnimeFight
 
 	bool Item::operator <<(Item& sourceitem)
 	{
-		return sourceitem.ChangeOwner(this);
+		return operator <<(&sourceitem);
 	}
 
 	bool Item::operator >>(Item& targetitem)
 	{
-		return ChangeOwner(&targetitem);
+		return operator >>(&targetitem);
+	}
+
+	bool Item::operator <<(Item* sourceitem)
+	{
+		return sourceitem->ChangeOwner(this);
+	}
+
+	bool Item::operator >> (Item* targetitem)
+	{
+		return ChangeOwner(targetitem);
 	}
 }

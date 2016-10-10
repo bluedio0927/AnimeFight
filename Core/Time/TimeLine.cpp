@@ -62,10 +62,17 @@ namespace AnimeFight
 			return false;
 	}
 
-	void TimeLine::UnSetTimeNodeStayTimeout(size_t In_NodeIndex)
+	bool TimeLine::UnSetTimeNodeStayTimeout(size_t In_NodeIndex)
 	{
 		std::lock_guard<std::mutex> autolock(m_mutex);
-		m_mapTimeNodeLeaveMode.erase(In_NodeIndex);
+		const auto &iter = m_mapTimeNodeLeaveMode.find(In_NodeIndex);
+		if (iter != m_mapTimeNodeLeaveMode.end())
+		{
+			m_mapTimeNodeLeaveMode.erase(iter);
+			return true;
+		}
+		else
+			return false;
 	}
 
 	void TimeLine::PushCMD(CMDTYPE In_CMD)
@@ -97,6 +104,8 @@ namespace AnimeFight
 			else
 				state = GotoNode(unilck, NextNodeIndex);//Next Node...
 		}
+		if (m_bLeave)
+			state = End;
 		return state;
 	}
 
