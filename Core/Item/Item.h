@@ -13,7 +13,6 @@ namespace AnimeFight
 	{
 	public:
 		using MapItem = std::map<long long, Item *>;
-
 	public:
 		Item(ItemType In_Type, Item *pOwner = nullptr, const std::wstring &In_ItemName = L"", const std::wstring &In_Description = L"");
 		virtual ~Item();
@@ -66,7 +65,7 @@ namespace AnimeFight
 			參數就是你這個Functor所能影響的所有Item。
 			定義上就是執行這個Functor就是執行這個Item本身的"效果"。
 		*/
-		virtual bool operator()(long long Reserved, std::vector<Item *> &pVecItem)
+		virtual bool operator()(long long Reserved, Item *pOwner, std::vector<Item *> *pVecItem)
 		{
 			return true;
 		}

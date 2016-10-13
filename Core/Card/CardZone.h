@@ -1,6 +1,5 @@
 #pragma once
 #include "Card.h"
-#include "SpecialCard.h"
 #include "../Item/Item.h"
 #include <deque>
 
@@ -106,69 +105,6 @@ namespace AnimeFight
 		private:
 			ZoneType m_eType;
 			CardDeq m_deqCardZone;
-		};
-
-		class HandCardZone :public CardZone
-		{
-		public:
-			HandCardZone(Item *pOwen)
-				:CardZone(CardZone::HandCardZone, pOwen, L"手牌區", L"儲存玩家所有可用的手牌")
-			{}
-		};
-
-		class CampCardZone :public CardZone
-		{
-		public:
-			CampCardZone(Item *pOwen)
-				:CardZone(CardZone::CampCardZone, pOwen, L"陣地區", L"儲存玩家所有打出的手牌")
-			{}
-		};
-
-		class DiscarCardZone :public CardZone
-		{
-		public:
-			DiscarCardZone(Item *pOwen)
-				:CardZone(CardZone::DiscarCardZone, pOwen, L"棄牌區", L"儲存玩家所有使用過後的手牌")
-			{}
-		};
-
-		class SakuraCookieZone :public CardZone
-		{
-		public:
-			SakuraCookieZone(Item *pOwen, size_t rates = 1)
-				:CardZone(CardZone::SakuraCookieZone, pOwen, L"櫻花餅牌區", L"儲存所有未召喚的櫻花餅")
-			{
-				for (size_t i = 0; i < rates; ++i)
-				{
-					for (size_t j = 0; j < 20; ++j)
-						operator<<(new SakuraCookieCard);
-				}
-			}
-		};
-
-		class VoidCardZone :public CardZone
-		{
-		public:
-			VoidCardZone(Item *pOwen)
-				:CardZone(CardZone::VoidCardZone, pOwen, L"間隙區", L"儲存所有被放逐的牌")
-			{}
-		};
-
-		class SummonCardZone :public CardZone
-		{
-		public:
-			SummonCardZone(Item *pOwen)
-				:CardZone(CardZone::VoidCardZone, pOwen, L"召喚區", L"儲存所有被召喚出的寶具牌")
-			{}
-
-			virtual bool SelfDoCanAppend(const Item *In_pAdjunctItem) override
-			{
-				//召喚牌區只能有6張
-				if (GetMapAdjunctItew().size() >= 6)
-					return false;
-				else
-					return true;
-			}
 		};
 	}
 }

@@ -2,7 +2,7 @@
 #include <deque>
 #include <algorithm>
 #include <chrono>
-#include "SpecialCard.h"
+#include "Card.h"
 
 namespace AnimeFight
 {
@@ -91,20 +91,6 @@ namespace AnimeFight
 		private:
 			StackType m_eType;
 			std::deque<BasicCard *> m_deqCardStack;
-		};
-
-		class HandStack : public CardStack
-		{
-		public:
-			HandStack(Item *In_Ownen)
-				:CardStack(CardStack::HandStack, In_Ownen, L"牌庫", L"儲存所有可用的被召喚寶具牌的地方")
-			{
-				for (int i = 0; i < 7; ++i)
-					operator<<(new BasicTicketCard);
-				for (int i = 0; i < 3; ++i)
-					operator<<(new BasicMagicCard);
-				Shuffle();
-			}
 		};
 	}
 }

@@ -11,12 +11,19 @@ namespace AnimeFight
 		class BasicCharacterItem:public Item
 		{
 		public:
-			BasicCharacterItem(CharacterType In_eCtype, CharacterRace In_eRace, Item* In_pOwner)
+			BasicCharacterItem(CharacterType In_eCtype, CharacterRace In_eRace, 
+				CardItem::CardStack *pHandStack, CardItem::CardZone *pHandCardZone, CardItem::CardZone *pCampCardZone, CardItem::CardZone *pDiscarCardZone, CardItem::CardZone *pVoidCardZone,
+				Item* In_pOwner)
 				:Item(ItemType::Character, In_pOwner, gs_mapCharacterItemString[In_eCtype].first, gs_mapCharacterItemString[In_eCtype].second)
 				, m_eType(In_eCtype), m_eRace(m_eRace)
-				, CampCardZone(this), DiscarCardZone(this), HandCardZone(this), HandStack(this), m_iSouls(0), m_iMagic(0), m_iSkillpoints(0)
+				, CampCardZone(pCampCardZone), DiscarCardZone(pDiscarCardZone), HandCardZone(pHandCardZone), HandStack(pHandStack), Ex_VoidCardZone(pVoidCardZone)
+				, m_iSouls(0), m_iMagic(0), m_iSkillpoints(0), m_iHP(5)
 			{
-				HandStack.Deal(&HandCardZone, 6);
+				CampCardZone->ChangeOwner(this);
+				DiscarCardZone->ChangeOwner(this);
+				HandCardZone->ChangeOwner(this);
+				HandStack->ChangeOwner(this);
+				HandStack->Deal(HandCardZone, 6);
 			}
 
 			virtual ~BasicCharacterItem() {}
@@ -41,7 +48,7 @@ namespace AnimeFight
 			void CalCampOwnSouls()
 			{
 				m_iSouls = 0;
-				auto Cards = CampCardZone.GetAllCards();
+				auto Cards = CampCardZone->GetAllCards();
 				for (auto &iter : Cards)
 					m_iSouls += iter->GetSoul();
 			}
@@ -54,6 +61,11 @@ namespace AnimeFight
 			const int& GetMagics()
 			{
 				return m_iMagic;
+			}
+
+			const int& GetSkillPoint()
+			{
+				return m_iSkillpoints;
 			}
 
 			//可以繼承覆寫, 有角色技能是會降低購買的Cost
@@ -76,7 +88,7 @@ namespace AnimeFight
 				if (iCost <= m_iSouls)
 				{
 					m_iSouls -= iCost;
-					(*pCard) >> DiscarCardZone;
+					return (*pCard) >> DiscarCardZone;
 				}
 				else
 					return false;
@@ -84,28 +96,68 @@ namespace AnimeFight
 
 			bool PostHandCard(CardItem::BasicCard *pCard)
 			{
-				auto iter = HandCardZone.Choose(pCard);
-				if (HandCardZone.IsEffectiveTarget(iter))
+				auto iter = HandCardZone->Choose(pCard);
+				if (HandCardZone->IsEffectiveTarget(iter))
 				{
-					bool bRet = HandCardZone.CardMove(iter, &CampCardZone);
+					bool bRet = HandCardZone->CardMove(iter, CampCardZone);
 					if (bRet)//出牌成功立刻結算魔力
 						m_iMagic += pCard->GetMagic();
+					//觸發出牌效果
+					(*pCard)(CardItem::Post, this, nullptr);
 					return bRet;
 				}
 				else
 					return false;
 			}
 
-			CardItem::CampCardZone CampCardZone;
-			CardItem::DiscarCardZone DiscarCardZone;
-			CardItem::HandCardZone HandCardZone;
-			CardItem::HandStack HandStack;
+			bool DiscardHandCard(CardItem::BasicCard *pCard)
+			{
+				auto iter = HandCardZone->Choose(pCard);
+				if (HandCardZone->IsEffectiveTarget(iter))
+					return HandCardZone->CardMove(iter, DiscarCardZone);
+				else
+					return false;
+			}
+
+			bool ExileHandCard(CardItem::BasicCard *pCard)
+			{
+				auto iter = HandCardZone->Choose(pCard);
+				if (HandCardZone->IsEffectiveTarget(iter))
+					return HandCardZone->CardMove(iter, Ex_VoidCardZone);
+				else
+					return false;
+			}
+
+			bool ExileDiscardCard(CardItem::BasicCard *pCard)
+			{
+				auto iter = DiscarCardZone->Choose(pCard);
+				if (DiscarCardZone->IsEffectiveTarget(iter))
+					return DiscarCardZone->CardMove(iter, Ex_VoidCardZone);
+				else
+					return false;
+			}
+
+			size_t GetHandCard(size_t CardNums)
+			{
+				return HandStack->Deal(HandCardZone, CardNums);
+			}
+
+			void addSkillpoint(int iSkills)
+			{
+				m_iSkillpoints += iSkills;
+			}
+
+			CardItem::CardZone *CampCardZone;
+			CardItem::CardZone *DiscarCardZone;
+			CardItem::CardZone *HandCardZone;
+			CardItem::CardZone *Ex_VoidCardZone;
+			CardItem::CardStack *HandStack;
 
 		private:
 			void CalCampOwnMagics()
 			{
 				m_iMagic = 0;
-				auto Cards = CampCardZone.GetAllCards();
+				auto Cards = CampCardZone->GetAllCards();
 				for (auto &iter : Cards)
 					m_iMagic += iter->GetCardType();
 			}
@@ -116,6 +168,7 @@ namespace AnimeFight
 			int	m_iSouls;
 			int m_iMagic;
 			int m_iSkillpoints;
+			int m_iHP;
 		};
 	}
 }

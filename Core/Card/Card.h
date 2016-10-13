@@ -1,6 +1,7 @@
 #pragma once
 #include "../Item/Item.h"
 #include "CardDefine.h"
+#include <iostream>
 namespace AnimeFight
 {
 	namespace CardItem

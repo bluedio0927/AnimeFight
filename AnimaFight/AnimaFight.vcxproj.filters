@@ -43,6 +43,9 @@
     <Filter Include="SourceFile\Card">
       <UniqueIdentifier>{3d7acc86-8a7d-4fe9-b919-e6a5c5a38eed}</UniqueIdentifier>
     </Filter>
+    <Filter Include="HeaderFile\System">
+      <UniqueIdentifier>{e20cc2ed-2832-49e9-80cb-7f805f864782}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -93,11 +96,20 @@
     <ClInclude Include="..\Core\Character\CharacterDefine.h">
       <Filter>HeaderFile\Character</Filter>
     </ClInclude>
-    <ClInclude Include="..\Core\Card\SummonStack.h">
-      <Filter>HeaderFile\Card</Filter>
-    </ClInclude>
     <ClInclude Include="..\Core\Card\TreasureCard.h">
       <Filter>HeaderFile\Card</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Core\Card\SpecialCardStack.h">
+      <Filter>HeaderFile\Card</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Core\Card\SpecialCardZone.h">
+      <Filter>HeaderFile\Card</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Core\Character\CharacterFactory.h">
+      <Filter>HeaderFile\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Core\System\GameCore.h">
+      <Filter>HeaderFile\System</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,5 +1,6 @@
 #pragma once
 #include "Card.h"
+#include "../Character/Character.h"
 namespace AnimeFight
 {
 	namespace CardItem
@@ -10,6 +11,21 @@ namespace AnimeFight
 			MoonTimerCard(Item *In_Ownen = nullptr)
 				:BasicCard(CardType::MoonTimer, 3, 2, 2, 1, 1, In_Ownen)
 			{}
+
+			virtual bool operator()(long long Reserved, Item *pOwner, std::vector<Item *> *pVecItem) override
+			{
+				if (Reserved == Post)
+				{
+					if (pOwner && pOwner->GetType() == ItemType::Character)
+					{
+						auto pCharacter = dynamic_cast<CharacterItem::BasicCharacterItem *>(pOwner);
+						pCharacter->GetHandCard(1);
+					}
+					return true;
+				}
+				else
+					return false;
+			}
 		};
 
 		class SevenColorBookCard : public BasicCard
@@ -82,6 +98,20 @@ namespace AnimeFight
 			GourdCard(Item *In_Ownen = nullptr)
 				:BasicCard(CardType::Gourd, 6, 3, 3, 4, 1, In_Ownen)
 			{}
+			virtual bool operator()(long long Reserved, Item *pOwner, std::vector<Item *> *pVecItem) override
+			{
+				if (Reserved == Come)
+				{
+					if (pOwner && pOwner->GetType() == ItemType::Character)
+					{
+						auto pCharacter = dynamic_cast<CharacterItem::BasicCharacterItem *>(pOwner);
+						pCharacter->GetHandCard(1);
+					}
+					return true;
+				}
+				else
+					return false;
+			}
 		};
 
 		class MiniEightTrigramsCard : public BasicCard
@@ -98,6 +128,20 @@ namespace AnimeFight
 			EmptyMoneyBoxCard(Item *In_Ownen = nullptr)
 				:BasicCard(CardType::EmptyMoneyBox, 6, 3, 3, 0, 0, In_Ownen)
 			{}
+			virtual bool operator()(long long Reserved, Item *pOwner, std::vector<Item *> *pVecItem) override
+			{
+				if (Reserved == Come)
+				{
+					if (pOwner && pOwner->GetType() == ItemType::Character)
+					{
+						auto pCharacter = dynamic_cast<CharacterItem::BasicCharacterItem *>(pOwner);
+						pCharacter->GetHandCard(2);
+					}
+					return true;
+				}
+				else
+					return false;
+			}
 		};
 
 		class HolyBoneClothCard : public BasicCard
@@ -106,6 +150,20 @@ namespace AnimeFight
 			HolyBoneClothCard(Item *In_Ownen = nullptr)
 				:BasicCard(CardType::HolyBoneCloth, 5, 4, 0, 1, 1, In_Ownen)
 			{}
+			virtual bool operator()(long long Reserved, Item *pOwner, std::vector<Item *> *pVecItem) override
+			{
+				if (Reserved == Come)
+				{
+					if (pOwner && pOwner->GetType() == ItemType::Character)
+					{
+						auto pCharacter = dynamic_cast<CharacterItem::BasicCharacterItem *>(pOwner);
+						pCharacter->GetHandCard(1);
+					}
+					return true;
+				}
+				else
+					return false;
+			}
 		};
 
 		class IdealTownshipCard : public BasicCard
@@ -218,6 +276,20 @@ namespace AnimeFight
 			LemiMagestyCard(Item *In_Ownen = nullptr)
 				:BasicCard(CardType::LemiMagesty, 4, 3, 3, 1, 1, In_Ownen)
 			{}
+			virtual bool operator()(long long Reserved, Item *pOwner, std::vector<Item *> *pVecItem) override
+			{
+				if (Reserved == Post)
+				{
+					if (pOwner && pOwner->GetType() == ItemType::Character)
+					{
+						auto pCharacter = dynamic_cast<CharacterItem::BasicCharacterItem *>(pOwner);
+						pCharacter->GetHandCard(2);
+					}
+					return true;
+				}
+				else
+					return false;
+			}
 		};
 
 		class RoyalHandCard : public BasicCard
@@ -234,6 +306,20 @@ namespace AnimeFight
 			CenturyLegendCard(Item *In_Ownen = nullptr)
 				:BasicCard(CardType::CenturyLegend, 2, 0, 0, 1, 1, In_Ownen)
 			{}
+			virtual bool operator()(long long Reserved, Item *pOwner, std::vector<Item *> *pVecItem) override
+			{
+				if (Reserved == Come)
+				{
+					if (pOwner && pOwner->GetType() == ItemType::Character)
+					{
+						auto pCharacter = dynamic_cast<CharacterItem::BasicCharacterItem *>(pOwner);
+						pCharacter->GetHandCard(1);
+					}
+					return true;
+				}
+				else
+					return false;
+			}
 		};
 	}
 }

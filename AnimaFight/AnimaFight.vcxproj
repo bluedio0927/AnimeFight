@@ -162,12 +162,15 @@
     <ClInclude Include="..\Core\Card\Card.h" />
     <ClInclude Include="..\Core\Card\CardStack.h" />
     <ClInclude Include="..\Core\Card\CardZone.h" />
-    <ClInclude Include="..\Core\Card\SummonStack.h" />
+    <ClInclude Include="..\Core\Card\SpecialCardStack.h" />
+    <ClInclude Include="..\Core\Card\SpecialCardZone.h" />
     <ClInclude Include="..\Core\Card\TreasureCard.h" />
     <ClInclude Include="..\Core\Character\Character.h" />
     <ClInclude Include="..\Core\Character\CharacterDefine.h" />
+    <ClInclude Include="..\Core\Character\CharacterFactory.h" />
     <ClInclude Include="..\Core\Item\Item.h" />
     <ClInclude Include="..\Core\Item\ItemDefine.h" />
+    <ClInclude Include="..\Core\System\GameCore.h" />
     <ClInclude Include="..\Core\Time\TimeLine.h" />
     <ClInclude Include="..\Core\Time\TimeNode.h" />
     <ClInclude Include="targetver.h" />
