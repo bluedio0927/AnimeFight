@@ -1,6 +1,7 @@
 #pragma once
 #include "Card.h"
 #include "../Character/Character.h"
+#include "../System/GameCore.h"
 namespace AnimeFight
 {
 	namespace CardItem
@@ -100,13 +101,16 @@ namespace AnimeFight
 			{}
 			virtual bool operator()(long long Reserved, Item *pOwner, std::vector<Item *> *pVecItem) override
 			{
+				if (!pOwner)
+					return false;
+
 				if (Reserved == Come)
 				{
-					if (pOwner && pOwner->GetType() == ItemType::Character)
-					{
-						auto pCharacter = dynamic_cast<CharacterItem::BasicCharacterItem *>(pOwner);
-						pCharacter->GetHandCard(1);
-					}
+					auto pCore = dynamic_cast<Core::GameCore *>(pOwner->GetSupenOwner());
+					for (size_t i = 0; i < pCore->RedTeam().GetTeamCharacters(); ++i)
+						pCore->RedTeam().Characters(i)->GetHandCard(1);
+					for (size_t i = 0; i < pCore->BlueTeam().GetTeamCharacters(); ++i)
+						pCore->BlueTeam().Characters(i)->GetHandCard(1);
 					return true;
 				}
 				else
@@ -130,7 +134,9 @@ namespace AnimeFight
 			{}
 			virtual bool operator()(long long Reserved, Item *pOwner, std::vector<Item *> *pVecItem) override
 			{
-				if (Reserved == Come)
+				if (!pOwner)
+					return false;
+				if (Reserved == Post)
 				{
 					if (pOwner && pOwner->GetType() == ItemType::Character)
 					{
@@ -152,17 +158,7 @@ namespace AnimeFight
 			{}
 			virtual bool operator()(long long Reserved, Item *pOwner, std::vector<Item *> *pVecItem) override
 			{
-				if (Reserved == Come)
-				{
-					if (pOwner && pOwner->GetType() == ItemType::Character)
-					{
-						auto pCharacter = dynamic_cast<CharacterItem::BasicCharacterItem *>(pOwner);
-						pCharacter->GetHandCard(1);
-					}
-					return true;
-				}
-				else
-					return false;
+				return false;
 			}
 		};
 
@@ -308,13 +304,15 @@ namespace AnimeFight
 			{}
 			virtual bool operator()(long long Reserved, Item *pOwner, std::vector<Item *> *pVecItem) override
 			{
+				if (!pOwner)
+					return false;
 				if (Reserved == Come)
 				{
-					if (pOwner && pOwner->GetType() == ItemType::Character)
-					{
-						auto pCharacter = dynamic_cast<CharacterItem::BasicCharacterItem *>(pOwner);
-						pCharacter->GetHandCard(1);
-					}
+					auto pCore = dynamic_cast<Core::GameCore *>(pOwner->GetSupenOwner());
+					for (size_t i = 0; i < pCore->RedTeam().GetTeamCharacters(); ++i)
+						pCore->RedTeam().Characters(i)->GetHandCard(1);
+					for (size_t i = 0; i < pCore->BlueTeam().GetTeamCharacters(); ++i)
+						pCore->BlueTeam().Characters(i)->GetHandCard(1);
 					return true;
 				}
 				else

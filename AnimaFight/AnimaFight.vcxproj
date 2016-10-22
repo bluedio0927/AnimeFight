@@ -168,6 +168,7 @@
     <ClInclude Include="..\Core\Character\Character.h" />
     <ClInclude Include="..\Core\Character\CharacterDefine.h" />
     <ClInclude Include="..\Core\Character\CharacterFactory.h" />
+    <ClInclude Include="..\Core\Character\Team.h" />
     <ClInclude Include="..\Core\Item\Item.h" />
     <ClInclude Include="..\Core\Item\ItemDefine.h" />
     <ClInclude Include="..\Core\System\GameCore.h" />

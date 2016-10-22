@@ -111,6 +111,9 @@
     <ClInclude Include="..\Core\System\GameCore.h">
       <Filter>HeaderFile\System</Filter>
     </ClInclude>
+    <ClInclude Include="..\Core\Character\Team.h">
+      <Filter>HeaderFile\Character</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AnimaFight.cpp">

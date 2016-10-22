@@ -33,7 +33,7 @@ namespace AnimeFight
 			}
 
 			//發牌堆中最上面的一張牌給其他牌區
-			size_t Deal(Item *pItem, size_t In_Nums = 1)
+			size_t Deal(Item *pItem, size_t In_Nums = 1, bool bTrigger = false)
 			{
 				size_t Deals(0);
 				if (pItem->GetType() == ItemType::CardZone)
@@ -47,6 +47,8 @@ namespace AnimeFight
 							++Deals;
 							--In_Nums;
 							itercard = m_deqCardStack.begin();
+							if (bTrigger)
+								(*(*itercard))(CardItem::Come, this, nullptr);
 						}
 						else
 							break;//不可以被附屬為牌區到達上限, 直接離開

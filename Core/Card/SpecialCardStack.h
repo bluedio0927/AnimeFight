@@ -104,6 +104,8 @@ namespace AnimeFight
 				}//END for (size_t i = 0; i < rates; ++i)
 
 				Shuffle();
+				Shuffle();
+				Shuffle();
 			}
 
 			~SummonStack() {}

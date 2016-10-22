@@ -47,10 +47,13 @@ namespace CardTest
 		std::unique_ptr<Core::GameCore> pSystem(new Core::GameCore(new CardItem::SummonStack, new CardItem::SummonCardZone, new CardItem::SakuraCookieZone, new CardItem::VoidCardZone));
 		
 		CharacterItem::BasicCharacterItem* pRyougiShiki = CharacterItem::CreateCharacter(CharacterItem::RyougiShiki, CharacterItem::Human, pSystem.get());
-
+		pSystem->BlueTeam()<< *pRyougiShiki;
 		//起始發6張牌到召喚牌區
 		pSystem->Summon(6);
-		
+		std::wcout << L"\n========================================\n召喚牌區:" << std::endl;
+		const auto& summonCards = pSystem->SummonZone().GetAllCards();
+		ShowDeqCard(summonCards);
+
 		std::wcout << L"輸入時輸入負值就是要直接跳離.....:" << std::endl;
 		int iChoose(0);
 		do
@@ -165,19 +168,22 @@ namespace CardTest
 		
 			//計算手牌離6張還差幾張
 			std::wcout << L"\n開始將手牌補回6張...." << std::endl;
-			size_t uiNeedGetCards = 6 - pRyougiShiki->HandCardZone->GetAllCardNums();
-			auto deals = pRyougiShiki->GetHandCard(uiNeedGetCards);
-		
-			//如果發牌數牌庫不足就將棄牌區送回牌庫重洗
-			if (deals < uiNeedGetCards)
+			size_t uiNeedGetCards(0);
+			if (pRyougiShiki->HandCardZone->GetAllCardNums() < 6)
 			{
-				std::wcout << L"牌庫不足 棄牌區加回牌庫重新洗牌..." << std::endl;
-				pRyougiShiki->DiscarCardZone->CardAllMove(pRyougiShiki->HandStack);
-				pRyougiShiki->HandStack->Shuffle();
-				std::wcout << L"牌庫目前牌數="<< pRyougiShiki->HandStack->GetCardNums()<<L" 目前需要補足牌數=" << uiNeedGetCards - deals<<std::endl;
-				pRyougiShiki->GetHandCard(uiNeedGetCards - deals);
+				uiNeedGetCards = 6 - pRyougiShiki->HandCardZone->GetAllCardNums();
+				auto deals = pRyougiShiki->GetHandCard(uiNeedGetCards);
+
+				//如果發牌數牌庫不足就將棄牌區送回牌庫重洗
+				if (deals < uiNeedGetCards)
+				{
+					std::wcout << L"牌庫不足 棄牌區加回牌庫重新洗牌..." << std::endl;
+					pRyougiShiki->DiscarCardZone->CardAllMove(pRyougiShiki->HandStack);
+					pRyougiShiki->HandStack->Shuffle();
+					std::wcout << L"牌庫目前牌數=" << pRyougiShiki->HandStack->GetCardNums() << L" 目前需要補足牌數=" << uiNeedGetCards - deals << std::endl;
+					pRyougiShiki->GetHandCard(uiNeedGetCards - deals);
+				}
 			}
-		
 			std::wcout << L"\n輸入非負值則繼續.... : ";
 			std::cin >> iChoose;
 		} while (iChoose >= 0);
